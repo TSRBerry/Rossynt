@@ -14,7 +14,7 @@ plugins {
 /* ROLL_BACK_CHANGELOG_PLUGIN BEGIN - https://github.com/JetBrains/gradle-changelog-plugin/issues/147
     id("org.jetbrains.changelog") version "2.0.0"
 */
-    id("org.jetbrains.changelog") version "1.3.1"
+    id("org.jetbrains.changelog") version "2.2.0"
 /* ROLL_BACK_CHANGELOG_PLUGIN END */
     // Gradle Qodana Plugin
     id("org.jetbrains.qodana") version "0.1.13"
