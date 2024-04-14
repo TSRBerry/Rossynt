@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+## [231.5.1] - 2924-04-14
+### Added
+- Support for IntelliJ Platform 2024.1
+
 ## [231.5.0] - 2024-01-15
 ### Added
 - Support for .NET 8 and CSharp12
