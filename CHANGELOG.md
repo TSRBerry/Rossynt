@@ -3,6 +3,23 @@
 # Rossynt Changelog
 
 ## [Unreleased]
+
+## [231.5.0] - 2024-01-15
+### Added
+- Support for .NET 8 and CSharp12
+- Support for IntelliJ Platform 2023.2
+- Another default path for the dotnet binary which is common on Linux: `/usr/bin/dotnet`
+
+### Changed
+- An exclusion for the `slf4-api` package has been added to the build phase to prevent another `NoClassDefFoundError`
+- The plugin files have been updated according to the latest intellij-platform-plugin-template commit
+- All the GitHub Action dependencies have been updated
+- All the .NET dependencies have been updated (including code changes to make the backend compatible with the new NUnit version)
+- All the Java dependencies have been updated
+
+### Removed
+- Support for IDE builds `< 231`, since the plugin verifier found incompatibilities with older versions.
+
 ## [223.4.0] - 2023-02-18
 ### Added
 - Support .NET 7.
