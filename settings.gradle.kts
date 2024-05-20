@@ -3,3 +3,5 @@ plugins {
 }
 
 rootProject.name = "Rossynt"
+include("plugin")
+include("backend")

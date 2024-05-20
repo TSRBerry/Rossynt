@@ -28,6 +28,7 @@ dependencies {
     implementation(libs.ktor.client.cio)
     implementation(libs.ktor.client.gson)
     implementation(libs.ktor.serialization.gson)
+    implementation(project(":backend"))
 }
 
 // Set the JVM language level used to build the project.
@@ -65,8 +66,12 @@ koverReport {
 }
 
 tasks {
-    wrapper {
-        gradleVersion = properties("gradleVersion").get()
+    clean {
+        dependsOn("cleanCopyBackend")
+    }
+
+    processResources {
+        dependsOn("copyBackend")
     }
 
     patchPluginXml {
@@ -142,4 +147,49 @@ tasks {
         // https://plugins.jetbrains.com/docs/intellij/deployment.html#specifying-a-release-channel
         channels = properties("pluginVersion").map { listOf(it.substringAfter('-', "").substringBefore('.').ifEmpty { "default" }) }
     }
+}
+
+val backendTargetDir = "${projectDir}/src/main/resources/raw/RossyntBackend"
+val backendPublishDir = rootProject.project("backend").ext["publishDir"] as String
+val backendVersions = rootProject.project("backend").ext["versions"] as Array<*>
+
+interface Injected {
+    @get:Inject val fs: FileSystemOperations
+}
+
+tasks.register("copyBackend") {
+    dependsOn(":backend:build")
+
+    inputs.dir(backendPublishDir)
+    outputs.dir(backendTargetDir)
+
+    val injected = project.objects.newInstance<Injected>()
+
+    doLast {
+        backendVersions.forEach { version ->
+            injected.fs.copy {
+                from("${backendPublishDir}/release_${version}")
+                into("${backendTargetDir}/${version}")
+                exclude("RossyntBackend")
+                duplicatesStrategy = DuplicatesStrategy.FAIL
+            }
+
+            val targetFiles = file("${backendTargetDir}/${version}").listFiles()?.filter {
+                it.name != "FileList.txt"
+            }
+            val fileList = file("${backendTargetDir}/${version}/FileList.txt")
+            fileList.createNewFile()
+            if (targetFiles != null) {
+                fileList.writeText(targetFiles.joinToString("\n") {
+                    "./${it.name}"
+                })
+            }
+            fileList.appendText("\n")
+        }
+
+    }
+}
+
+tasks.register<Delete>("cleanCopyBackend") {
+    delete = setOf(backendTargetDir)
 }
