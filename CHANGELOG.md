@@ -3,6 +3,10 @@
 # Rossynt Changelog
 
 ## [Unreleased]
+## [231.5.3] - 2024-11-18
+### Added
+- Support for IntelliJ Platform 2024.3
+
 ## [231.5.2] - 2024-09-15
 ### Added
 - Support for IntelliJ Platform 2024.2
