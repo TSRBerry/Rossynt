@@ -3,6 +3,13 @@
 # Rossynt Changelog
 
 ## [Unreleased]
+## [231.5.4] - 2024-12-01
+### Added
+- Support for .NET 9 (but not CSharp13 yet)
+
+### Fixed
+- Support for .NET 8
+
 ## [231.5.3] - 2024-11-18
 ### Added
 - Support for IntelliJ Platform 2024.3
