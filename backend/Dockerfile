@@ -6,6 +6,7 @@
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-bullseye-slim AS build
 COPY --from=mcr.microsoft.com/dotnet/sdk:7.0 /usr/share/dotnet /usr/share/dotnet
 COPY --from=mcr.microsoft.com/dotnet/sdk:8.0 /usr/share/dotnet /usr/share/dotnet
+COPY --from=mcr.microsoft.com/dotnet/sdk:9.0 /usr/share/dotnet /usr/share/dotnet
 
 # Copy csproj and restore as distinct layers.
 WORKDIR /source
@@ -23,18 +24,21 @@ COPY RossyntBackend/. ./RossyntBackend/
 
 # Run unit test.
 WORKDIR /source/RossyntBackendUnitTest
+RUN dotnet test -c release --framework net9.0 -o /app-unit-test/net9.0
 RUN dotnet test -c release --framework net8.0 -o /app-unit-test/net8.0
 RUN dotnet test -c release --framework net7.0 -o /app-unit-test/net7.0
 RUN dotnet test -c release --framework net6.0 -o /app-unit-test/net6.0
 
 # Run integration test.
 WORKDIR /source/RossyntBackendIntegrationTest
+RUN dotnet test -c release --framework net9.0 -o /app-integration-test/net9.0
 RUN dotnet test -c release --framework net8.0 -o /app-integration-test/net8.0
 RUN dotnet test -c release --framework net7.0 -o /app-integration-test/net7.0
 RUN dotnet test -c release --framework net6.0 -o /app-integration-test/net6.0
 
 # Build app.
 WORKDIR /source/RossyntBackend
+RUN dotnet publish -c release --framework net9.0 -o /app/net9.0 --no-restore
 RUN dotnet publish -c release --framework net8.0 -o /app/net8.0 --no-restore
 RUN dotnet publish -c release --framework net7.0 -o /app/net7.0 --no-restore
 RUN dotnet publish -c release --framework net6.0 -o /app/net6.0 --no-restore
